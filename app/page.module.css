@@ -1,0 +1,119 @@
+.main { overflow-x: hidden; background: var(--white); }
+
+/* Shared layout */
+.section    { padding: 5rem 0; }
+.bgLight    { background: var(--light); }
+.container  { max-width: 1320px; margin: 0 auto; padding: 0 2rem; }
+.sectionHead { text-align: center; margin-bottom: 3rem; }
+.sectionH1  { font-family:'Nunito',sans-serif; font-size:clamp(1.7rem,3vw,2.2rem); font-weight:800; color:var(--dark); margin:.75rem 0 .5rem; }
+.sectionSub { color:var(--body-color); font-size:1rem; }
+
+/* Service cards */
+.row4 { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
+.serviceCard {
+  background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow);
+  padding:2rem 1.5rem; text-align:center;
+  border-bottom:4px solid transparent;
+  transition:all .3s ease; height:100%;
+}
+.serviceCard:hover { border-bottom-color:var(--primary); box-shadow:var(--shadow-lg); transform:translateY(-6px); }
+.serviceIconWrap {
+  width:70px; height:70px; background:rgba(92,107,192,.1); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 1rem; font-size:2rem;
+  transition:background .3s, transform .3s;
+}
+.serviceCard:hover .serviceIconWrap { background:var(--primary); transform:scale(1.1) rotate(8deg); }
+.serviceTitle { font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; color:var(--dark); margin-bottom:.5rem; }
+.serviceDesc  { font-size:.88rem; color:var(--body-color); line-height:1.65; }
+
+/* About */
+.aboutRow { display:grid; grid-template-columns:1fr 1fr; gap:3.5rem; align-items:center; }
+.aboutImgWrap { position:relative; }
+.aboutImg { width:100%; height:420px; object-fit:cover; border-radius:var(--radius); box-shadow:var(--shadow-lg); display:block; }
+.aboutBadge {
+  position:absolute; bottom:-18px; right:-18px;
+  background:var(--primary); color:#fff; border-radius:var(--radius);
+  padding:1rem 1.5rem; text-align:center; box-shadow:var(--shadow-lg);
+}
+.aboutBadgeNum   { display:block; font-family:'Nunito',sans-serif; font-size:2rem; font-weight:800; }
+.aboutBadgeLabel { font-size:.8rem; opacity:.85; }
+.aboutHeading { font-family:'Nunito',sans-serif; font-size:2rem; font-weight:800; color:var(--dark); margin:.75rem 0 1rem; }
+.aboutPara    { color:var(--body-color); line-height:1.75; margin-bottom:.9rem; }
+.aboutFeatures { display:grid; grid-template-columns:1fr 1fr; gap:.4rem; margin-bottom:1rem; }
+.aboutFeature  { font-size:.9rem; color:var(--body-color); margin:0; }
+.featureArrow  { color:var(--primary); font-weight:700; margin-right:.3rem; }
+.aboutBtn      { margin-top:1.25rem; border-radius:var(--radius) !important; }
+
+/* Categories */
+.catGrid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; }
+.catCard {
+  background:var(--white); border-radius:var(--radius); padding:1.25rem 1.5rem;
+  box-shadow:var(--shadow); display:flex; align-items:center; gap:1rem;
+  border-left:4px solid var(--cc,var(--primary));
+  transition:all .3s ease; height:100%;
+}
+.catCard:hover { box-shadow:var(--shadow-lg); transform:translateY(-4px); }
+.catIconBox { width:48px; height:48px; border-radius:var(--radius); display:flex; align-items:center; justify-content:center; font-size:1.5rem; flex-shrink:0; transition:transform .3s ease; }
+.catCard:hover .catIconBox { transform:rotate(10deg) scale(1.15); }
+.catInfo { flex:1; }
+.catName { font-family:'Nunito',sans-serif; font-weight:800; font-size:.9rem; color:var(--dark); margin-bottom:.15rem; }
+
+/* Steps */
+.stepCard { background:var(--light); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); transition:all .3s ease; height:100%; display:flex; flex-direction:column; }
+.stepCard:hover { box-shadow:var(--shadow-lg); transform:translateY(-6px); }
+.stepTop { background:linear-gradient(135deg,var(--dark),var(--primary)); padding:1.5rem; display:flex; align-items:center; justify-content:space-between; }
+.stepNum   { font-family:'Nunito',sans-serif; font-size:2.2rem; font-weight:800; color:rgba(255,255,255,.25); }
+.stepEmoji { font-size:2rem; transition:transform .3s ease; }
+.stepCard:hover .stepEmoji { transform:scale(1.2) rotate(10deg); }
+.stepBody  { padding:1.25rem; flex:1; }
+.stepTitle { font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; color:var(--dark); margin-bottom:.5rem; }
+.stepDesc  { font-size:.88rem; color:var(--body-color); line-height:1.6; }
+.stepFoot  { padding:.75rem 1.25rem; border-top:1px solid var(--border); font-size:.85rem; color:var(--body-color); font-weight:600; }
+.stepArrow { color:var(--primary); font-weight:700; margin-right:.3rem; }
+
+/* Career cards */
+.careerCard { background:var(--white); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); transition:all .3s ease; height:100%; }
+.careerCard:hover { box-shadow:var(--shadow-lg); transform:translateY(-6px); }
+.careerImgWrap { position:relative; overflow:hidden; }
+.careerImg { width:100%; height:200px; object-fit:cover; display:block; transition:transform .5s ease; }
+.careerCard:hover .careerImg { transform:scale(1.07); }
+.careerOverlay { position:absolute; inset:0; background:rgba(24,29,56,.6); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .3s ease; }
+.careerCard:hover .careerOverlay { opacity:1; }
+.careerBtn { padding:.6rem 1.5rem; background:var(--primary); color:#fff; font-family:'Nunito',sans-serif; font-weight:700; font-size:.88rem; border-radius:999px; transition:background .3s; }
+.careerBtn:hover { background:var(--primary-dark); color:#fff; }
+.careerBody  { padding:1rem 1.25rem; }
+.careerRole  { font-family:'Nunito',sans-serif; font-size:1rem; font-weight:800; color:var(--dark); margin-bottom:.25rem; }
+.careerSkills { font-size:.82rem; color:var(--primary); font-weight:600; }
+
+/* Stats */
+.statsSection { background:linear-gradient(135deg,var(--dark) 0%,#2d3561 100%); padding:4rem 0; }
+.statsGrid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
+.statCard { text-align:center; padding:2rem 1rem; border-radius:var(--radius); background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); transition:all .3s ease; }
+.statCard:hover { background:rgba(255,255,255,.11); transform:translateY(-5px); }
+.statIcon  { font-size:2.5rem; margin-bottom:.75rem; }
+.statNum   { font-family:'Nunito',sans-serif; font-size:2.4rem; font-weight:800; color:var(--primary); margin-bottom:.25rem; }
+.statLabel { font-size:.9rem; color:rgba(255,255,255,.75); font-weight:600; }
+
+/* Footer */
+.footerTop { background:var(--dark); padding:4rem 0 2rem; }
+.footerGrid { display:grid; grid-template-columns:repeat(4,1fr); gap:2rem; }
+.footerBrand { font-family:'Nunito',sans-serif; font-size:1.4rem; font-weight:800; color:#fff; margin-bottom:.75rem; }
+.footerAbout { color:rgba(255,255,255,.55); font-size:.88rem; line-height:1.7; margin-bottom:1rem; }
+.footerHeading { font-family:'Nunito',sans-serif; font-size:1rem; font-weight:700; color:#fff; margin-bottom:1rem; }
+.footerLink { display:block; color:rgba(255,255,255,.55); font-size:.88rem; padding:.2rem 0; transition:all .3s; cursor:pointer; }
+.footerLink:hover { color:#fff; padding-left:.4rem; }
+.footerCta { display:inline-flex; align-items:center; padding:.65rem 1.4rem; background:var(--primary); color:#fff; font-family:'Nunito',sans-serif; font-weight:700; font-size:.88rem; border-radius:var(--radius); transition:background .3s; }
+.footerCta:hover { background:var(--primary-dark); color:#fff; }
+.footerBottom { background:#0f1322; padding:1.25rem 0; }
+.footerCopy { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.5rem; }
+.footerCopy p { color:rgba(255,255,255,.4); font-size:.82rem; margin:0; }
+.footerMenu { display:flex; gap:1.5rem; }
+.footerMenu a { color:rgba(255,255,255,.4); font-size:.82rem; transition:color .3s; }
+.footerMenu a:hover { color:#fff; }
+
+/* Responsive */
+@media (max-width:1200px) { .row4 { grid-template-columns:repeat(2,1fr); } .statsGrid { grid-template-columns:repeat(2,1fr); } .footerGrid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:992px)  { .aboutRow { grid-template-columns:1fr; } .catGrid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:768px)  { .row4,.catGrid,.statsGrid { grid-template-columns:1fr; } .footerGrid { grid-template-columns:1fr; } .footerCopy { flex-direction:column; text-align:center; } .aboutBadge { right:0; bottom:-14px; } }
+

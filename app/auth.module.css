@@ -1,0 +1,75 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255,179,198,.55), transparent 18rem),
+    radial-gradient(circle at 85% 75%, rgba(179,212,255,.65), transparent 20rem),
+    linear-gradient(135deg, #fff8bb 0%, #faf9f6 45%, #f1efff 100%);
+  padding: 2rem 1rem;
+}
+.card {
+  width: 100%;
+  max-width: 460px;
+  background: var(--white);
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 50px rgba(24,29,56,.1), 0 2px 8px rgba(0,0,0,.04);
+  padding: 2.5rem 2rem;
+  border: 1.5px solid rgba(24,29,56,.07);
+  animation: fadeInUp .45s ease both;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  margin-bottom: 1.25rem;
+}
+.brand span { font-size: 1.8rem; }
+.brand h2 {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin: 0;
+}
+.brand h2 em { color: var(--dark); font-style: normal; }
+.title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--dark);
+  text-align: center;
+  margin-bottom: .3rem;
+}
+.sub {
+  text-align: center;
+  color: var(--body-color);
+  font-size: .9rem;
+  margin-bottom: 1.75rem;
+}
+.switchLink {
+  margin-top: 1.25rem;
+  font-size: .9rem;
+  color: var(--body-color);
+  text-align: center;
+}
+.switchLink a { color: var(--primary); font-weight: 700; }
+.switchLink a:hover { text-decoration: underline; }
+.successIcon {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  animation: bounceIn .6s ease;
+}
+.page{position:relative;overflow:hidden;background:radial-gradient(circle at 15% 20%,rgba(185,244,126,.12),transparent 20rem),radial-gradient(circle at 85% 75%,rgba(133,157,183,.16),transparent 22rem),#252b32}
+.page::before,.page::after{content:"";position:absolute;width:270px;height:270px;border:1px solid rgba(185,244,126,.13);border-radius:50%;pointer-events:none;animation:authOrbit 36s linear infinite}
+.page::before{top:-165px;left:-80px;box-shadow:0 0 0 24px rgba(185,244,126,.035),0 0 0 50px rgba(185,244,126,.025)}.page::after{right:-90px;bottom:-175px;animation-direction:reverse}
+@keyframes authOrbit{to{transform:rotate(360deg)}}
+.card{position:relative;z-index:1;overflow:hidden;background:#30363e;border:1px solid rgba(255,255,255,.1);border-radius:1.15rem;box-shadow:0 24px 70px rgba(0,0,0,.28);animation:authRise .55s cubic-bezier(.2,.8,.2,1) both}
+@keyframes authRise{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+.brand h2,.brand h2 em{color:#f2f4f0}.brand h2 em{color:#b9f47e}.title{color:#f2f4f0}.sub,.switchLink{color:#b7c0c5}.switchLink a{color:#b9f47e}.card :global(.form-group label){color:#dce1df}.card :global(.form-control){color:#f2f4f0;background:#252b32;border-color:#4b545d}.card :global(.form-control::placeholder){color:#89939a}.card :global(.form-control:focus){border-color:#b9f47e!important;box-shadow:0 0 0 4px rgba(185,244,126,.12)!important}.card :global(.btn-primary){color:#20261f;background:#b9f47e;border-color:#b9f47e}.card :global(.btn-primary:hover){color:#20261f;background:#c9f79b;border-color:#c9f79b}.successIcon{color:#b9f47e}
+@media(prefers-reduced-motion:reduce){.page::before,.page::after,.card{animation:none!important}}
+.page{background:radial-gradient(circle at 15% 20%,rgba(205,195,246,.78),transparent 22rem),radial-gradient(circle at 85% 75%,rgba(255,158,174,.72),transparent 23rem),linear-gradient(135deg,#d8d0fa,#fff4f5 52%,#ffc1ca)}.page::before,.page::after{border-color:rgba(83,95,196,.18);box-shadow:0 0 0 26px rgba(255,255,255,.17)}.card{background:rgba(255,255,255,.92);border-color:rgba(65,61,135,.1);box-shadow:0 24px 70px rgba(52,48,116,.18)}.brand h2,.brand h2 em,.title{color:#19183a}.brand h2 em{color:#535fc4}.sub,.switchLink{color:#676582}.switchLink a{color:#535fc4}.card :global(.form-group label){color:#29284d}.card :global(.form-control){color:#19183a;background:#fff;border-color:#dcd9ee}.card :global(.form-control::placeholder){color:#9290a8}.card :global(.form-control:focus){border-color:#7379d5!important;box-shadow:0 0 0 4px rgba(95,98,197,.13)!important}.card :global(.btn-primary){color:#fff;background:linear-gradient(105deg,#555fc4,#7c70d7 50%,#e584aa);border:0}.successIcon{color:#535fc4}
+.page{background:#fff}.page::before,.page::after{border-color:rgba(83,95,196,.1);box-shadow:0 0 0 26px rgba(205,195,246,.1)}.card{background:#fff;border-color:#eceaf5;box-shadow:0 20px 56px rgba(25,24,58,.1)}

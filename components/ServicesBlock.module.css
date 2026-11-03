@@ -1,0 +1,250 @@
+.servicesSection {
+  padding: 6rem 1.5rem;
+  background-color: #ffffff;
+}
+
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 3.5rem;
+}
+
+.label {
+  display: block;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.heading {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  color: var(--allinn-brown);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 3.5rem;
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+.drawers {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.drawerItem {
+  background: var(--allinn-cream);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  transition: all 0.35s ease;
+  border: 1px solid rgba(24, 29, 56, 0.04);
+}
+
+.drawerItem.active {
+  background: var(--allinn-cream-card);
+  box-shadow: 0 10px 30px rgba(61, 38, 49, 0.06);
+}
+
+.toggler {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 1.8rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.togglerText {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--allinn-brown);
+}
+
+.stepNum {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: rgba(92, 107, 192, 0.12);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+.iconCircle {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: rgba(61, 38, 49, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.active .iconCircle {
+  background: var(--primary);
+  transform: rotate(90deg);
+}
+
+.iconH, .iconV {
+  position: absolute;
+  background-color: var(--allinn-brown);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.active .iconH, .active .iconV {
+  background-color: #ffffff;
+}
+
+.iconH {
+  width: 14px;
+  height: 2px;
+}
+
+.iconV {
+  width: 2px;
+  height: 14px;
+}
+
+.iconVHidden {
+  transform: scaleY(0);
+  opacity: 0;
+}
+
+/* ── Drawer Body ── */
+.drawerBody {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s var(--smooth-ease), opacity 0.3s ease;
+  opacity: 0;
+}
+
+.active .drawerBody {
+  max-height: 400px;
+  opacity: 1;
+}
+
+.drawerContent {
+  padding: 0 1.8rem 1.8rem 1.8rem;
+}
+
+.subHeading {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 0.6rem;
+}
+
+.desc {
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.bulletList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bulletItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--allinn-brown);
+}
+
+.checkIcon {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+/* ── Media Column ── */
+.mediaCol {
+  position: relative;
+}
+
+.photoFrame {
+  position: relative;
+  border-radius: 2rem;
+  overflow: hidden;
+  height: 26rem;
+  box-shadow: 0 20px 45px rgba(24, 29, 56, 0.12);
+  background: var(--allinn-cream);
+}
+
+.photoSlide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 0.5s ease, transform 0.5s var(--smooth-ease);
+  pointer-events: none;
+}
+
+.photoActive {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photoOverlay {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 2;
+}
+
+.photoTag {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  color: var(--allinn-brown);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 800;
+  border-radius: 999px;
+  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.15);
+}

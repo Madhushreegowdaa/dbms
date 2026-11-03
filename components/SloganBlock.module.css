@@ -1,0 +1,204 @@
+.sloganSection {
+  padding: 6rem 1.5rem;
+  background-color: #ffffff;
+  overflow: hidden;
+  position: relative;
+}
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.sloganPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.95rem;
+  background: rgba(92, 107, 192, 0.08);
+  color: var(--primary);
+  border-radius: 999px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2rem;
+}
+
+.pillPulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  animation: pulse 1.6s infinite;
+}
+
+.sloganItems {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem 1.6rem;
+  text-align: center;
+}
+
+/* ── Word Slide-Up with Hover Shimmer ── */
+.word {
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(2rem, 4.4vw, 4.2rem);
+  font-weight: 800;
+  color: var(--allinn-brown);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease var(--delay), transform 0.8s var(--smooth-ease) var(--delay);
+  cursor: default;
+}
+
+.word span {
+  display: inline-block;
+  transition: transform 0.25s var(--spring-bounce), color 0.25s ease;
+}
+
+.word:hover span {
+  transform: translateY(-4px) scale(1.03);
+  color: var(--primary);
+}
+
+.active .word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Pop-in Fun Shapes with Tooltips ── */
+.shapeWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0) rotate(120deg);
+  transition: opacity 0.6s ease var(--delay), transform 0.65s var(--spring-bounce) var(--delay);
+}
+
+.active .shapeWrap {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.shape {
+  display: inline-block;
+  flex-shrink: 0;
+  transition: transform 0.3s var(--spring-bounce);
+  cursor: pointer;
+}
+
+.shape:hover {
+  transform: scale(1.15) rotate(10deg);
+}
+
+.shapeTooltip {
+  position: absolute;
+  bottom: -1.8rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  background: var(--dark);
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.shapeWrap:hover .shapeTooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.shape1 {
+  background: url('/shapes/slogan-shape-1.svg') 50% / contain no-repeat;
+  width: clamp(2.6rem, 5.8vw, 5rem);
+  height: clamp(3rem, 6.5vw, 5.8rem);
+}
+
+.shape2 {
+  background: url('/shapes/slogan-shape-2.svg') 50% / contain no-repeat;
+  width: clamp(2.6rem, 5.8vw, 5rem);
+  height: clamp(3rem, 6.5vw, 5.8rem);
+}
+
+.shape3 {
+  background: url('/shapes/slogan-shape-3.svg') 50% / contain no-repeat;
+  width: clamp(2.8rem, 6vw, 5.2rem);
+  height: clamp(2.8rem, 6vw, 5.2rem);
+}
+
+/* ── Organic Masked Photos ── */
+.maskedImg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  opacity: 0;
+  transform: scale(0) rotate(120deg);
+  transition: opacity 0.6s ease var(--delay), transform 0.65s var(--spring-bounce) var(--delay);
+  -webkit-mask-position: center center;
+  mask-position: center center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  flex-shrink: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.maskedImg:hover {
+  transform: scale(1.1) rotate(4deg) !important;
+}
+
+.active .maskedImg {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.img1 {
+  width: clamp(3.5rem, 7.5vw, 6.8rem);
+  height: clamp(4rem, 9vw, 8.2rem);
+  -webkit-mask-image: url('/shapes/slogan-mask-1.svg');
+  mask-image: url('/shapes/slogan-mask-1.svg');
+}
+
+.img2 {
+  width: clamp(4rem, 9vw, 8.5rem);
+  height: clamp(3.6rem, 8vw, 7.5rem);
+  -webkit-mask-image: url('/shapes/slogan-mask-2.svg');
+  mask-image: url('/shapes/slogan-mask-2.svg');
+}
+
+.maskedImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .sloganSection {
+    padding: 4rem 1rem;
+  }
+  .sloganItems {
+    gap: 0.8rem 1rem;
+  }
+}

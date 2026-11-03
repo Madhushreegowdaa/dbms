@@ -1,0 +1,63 @@
+.wrapper { max-width: 860px; }
+.pageHeader {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: .75rem; flex-wrap: wrap; gap: 1rem;
+}
+.title { font-family: 'Nunito', sans-serif; font-size: 1.75rem; font-weight: 800; color: var(--dark); }
+.completionBadge {
+  display: flex; flex-direction: column; align-items: center;
+  background: var(--allinn-yellow); color: var(--dark);
+  border-radius: 1rem; padding: .75rem 1.4rem; min-width: 90px;
+  box-shadow: 0 4px 14px rgba(24,29,56,.12);
+  border: 1.5px solid rgba(24,29,56,.1);
+}
+.completionBadge span { font-family: 'Nunito', sans-serif; font-size: 1.6rem; font-weight: 800; line-height: 1; }
+.completionBadge small { font-size: .72rem; opacity: .7; font-weight: 700; }
+
+.progressBar  { height: 7px; background: rgba(24,29,56,.08); border-radius: 999px; margin-bottom: 1.75rem; overflow: hidden; }
+.progressFill { height: 100%; background: var(--primary); border-radius: 999px; transition: width 1s ease; }
+
+.formCard {
+  padding: 2rem;
+  background: var(--white);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px rgba(24,29,56,.07);
+  border: 1.5px solid rgba(24,29,56,.06);
+}
+.section { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(24,29,56,.07); }
+.section:last-of-type { border-bottom: none; margin-bottom: 1.25rem; }
+.sectionTitle {
+  font-family: 'Nunito', sans-serif; font-size: .78rem; font-weight: 800;
+  color: var(--primary); margin-bottom: 1.1rem;
+  text-transform: uppercase; letter-spacing: 1.5px;
+  display: flex; align-items: center; gap: .5rem;
+}
+.sectionTitle::before {
+  content: ''; display: inline-block; width: 4px; height: 14px;
+  background: var(--allinn-yellow); border-radius: 2px;
+  border: 1px solid rgba(24,29,56,.15);
+}
+.wrapper{max-width:920px}
+.title{font-size:clamp(1.85rem,3vw,2.45rem);letter-spacing:-.045em}
+.completionBadge{background:linear-gradient(145deg,#fff4c2,#ffe28a);border:1px solid rgba(24,29,56,.08);box-shadow:0 10px 26px rgba(24,29,56,.08);transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+.completionBadge:hover{transform:translateY(-3px) rotate(-2deg);box-shadow:0 16px 32px rgba(24,29,56,.12)}
+.progressBar{height:9px;background:#e8edf0;border-radius:999px;box-shadow:inset 0 1px 2px rgba(24,29,56,.05)}
+.progressFill{background:linear-gradient(90deg,#74cdb0,#83cce4,#8c93ed);position:relative}
+.progressFill::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent,rgba(255,255,255,.62),transparent);transform:translateX(-100%);animation:profileProgressShine 2.4s ease-in-out .9s infinite}
+@keyframes profileProgressShine{to{transform:translateX(100%)}}
+.formCard{border-radius:1.6rem;box-shadow:0 18px 50px rgba(24,29,56,.075);border:1px solid rgba(24,29,56,.07);padding:clamp(1.25rem,4vw,2.4rem);transition:box-shadow .4s}
+.formCard:hover{box-shadow:0 24px 62px rgba(24,29,56,.1)}
+.section{position:relative;padding-left:1rem;transition:border-color .3s}
+.sectionTitle{font-size:.8rem;letter-spacing:.12em;color:#425b70}
+.sectionTitle::before{width:5px;height:18px;background:linear-gradient(#74cdb0,#ffc75f);border:0;box-shadow:0 0 0 4px rgba(116,205,176,.11)}
+.formCard :global(.form-group){gap:.45rem}
+.formCard :global(.form-group label){transition:color .2s}
+.formCard :global(.form-group:focus-within label){color:#497c69}
+.formCard :global(.form-control){border-color:#e3e8ea;background:linear-gradient(180deg,#fff,#fcfdfd);transition:border-color .25s,box-shadow .25s,transform .25s}
+.formCard :global(.form-control:focus){border-color:#83cdb1!important;box-shadow:0 0 0 4px rgba(116,205,176,.14)!important;transform:translateY(-2px)}
+.formCard :global(button.btn-primary){background:linear-gradient(105deg,#192a38,#315062);border:0;box-shadow:0 10px 24px rgba(25,42,56,.18);transition:transform .25s,box-shadow .25s}
+.formCard :global(button.btn-primary:hover){box-shadow:0 14px 30px rgba(25,42,56,.25)}
+@media(max-width:600px){.completionBadge{padding:.65rem 1rem}.section{padding-left:.4rem}.formCard{border-radius:1.25rem}}
+@media(prefers-reduced-motion:reduce){.completionBadge,.formCard,.formCard :global(.form-control){transition:none!important}.progressFill::after{animation:none!important}}
+.photoUpload{display:flex;align-items:center;gap:1rem;margin:0 0 1.5rem;padding:1rem;border:1px solid rgba(80,78,160,.14);border-radius:1rem;background:linear-gradient(110deg,#f1edff,#fff0f3)}.photoPreview{display:grid;flex:0 0 76px;width:76px;height:76px;place-items:center;overflow:hidden;border:3px solid #fff;border-radius:50%;background:linear-gradient(140deg,#78c8f0,#ff9eae);box-shadow:0 5px 18px rgba(35,33,82,.13);color:#19183a;font-size:1.6rem;font-weight:800}.photoPreview img{width:100%;height:100%;object-fit:cover}.photoControls strong{color:#19183a}.photoControls p{margin:.2rem 0 .55rem;color:#676582;font-size:.82rem}.photoControls label{position:relative;overflow:hidden}.photoControls input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.formCard :global(button.btn-primary){background:linear-gradient(105deg,#555fc4,#7c70d7 50%,#e584aa);box-shadow:0 10px 24px rgba(82,85,185,.2)}.sectionTitle{color:#5555ad}.sectionTitle::before{background:linear-gradient(#78c8f0,#ff9eae)}
+.wrapper,.pageHeader .title{color:#19183a}.formCard{background:#fff}.completionBadge{background:linear-gradient(145deg,#eeecff,#fff0f4);color:#19183a}
