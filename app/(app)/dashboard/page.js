@@ -10,29 +10,49 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
-  const { data: student } = await supabase
-    .from('students').select('*').eq('auth_user_id', user.id).single();
+  const { data: student, error: studentError } = await supabase
+    .from('students')
+    .select('student_id, name, email, branch, year, career_goal')
+    .eq('student_id', user.id)
+    .maybeSingle();
+  if (studentError) throw new Error(`Could not load student profile: ${studentError.message}`);
 
   let skills = [];
+  let recommendationCount = 0;
+  let courseDataStatus = student ? 'unavailable' : 'profile-missing';
   if (student) {
-    const { data } = await supabase
+    const { data, error: skillsError } = await supabase
       .from('student_skills')
-      .select('proficiency, created_at, skills(skill_name, category)')
-      .eq('student_id', student.id)
-      .order('created_at', { ascending: false });
-    skills = data || [];
+      .select('skill_id, proficiency_level, skills(skill_name, category)')
+      .eq('student_id', student.student_id)
+      .order('skill_id');
+    if (skillsError) throw new Error(`Could not load your skills: ${skillsError.message}`);
+    skills = data;
+
+    const { count, error: recommendationsError } = await supabase
+      .from('recommendations')
+      .select('recommendation_id', { count: 'exact', head: true })
+      .eq('student_id', student.student_id);
+    if (recommendationsError) {
+      courseDataStatus = ['42P01', 'PGRST205'].includes(recommendationsError.code)
+        ? 'migration-required'
+        : 'error';
+    } else {
+      recommendationCount = count || 0;
+      courseDataStatus = 'ready';
+    }
   }
 
   const totalSkills       = skills.length;
-  const beginnerCount     = skills.filter(s => s.proficiency === 'Beginner').length;
-  const intermediateCount = skills.filter(s => s.proficiency === 'Intermediate').length;
-  const advancedCount     = skills.filter(s => s.proficiency === 'Advanced').length;
-  const recentSkills      = skills.slice(0, 5);
+  const beginnerCount     = skills.filter(s => s.proficiency_level === 'Beginner').length;
+  const intermediateCount = skills.filter(s => s.proficiency_level === 'Intermediate').length;
+  const advancedCount     = skills.filter(s => s.proficiency_level === 'Advanced').length;
+  const studentSkills     = skills.slice(0, 5);
 
-  const fields = ['full_name','college','branch','academic_year','career_goal','bio'];
+  const fields = ['name','branch','year','career_goal'];
   const filled = student ? fields.filter(f => student[f]).length : 0;
   const completion = Math.round((filled / fields.length) * 100);
-  const displayName = student?.full_name || user.email.split('@')[0];
+  const displayName = student?.name || user.email.split('@')[0];
 
   return (
     <DashboardClient
@@ -42,10 +62,11 @@ export default async function DashboardPage() {
       beginnerCount={beginnerCount}
       intermediateCount={intermediateCount}
       advancedCount={advancedCount}
-      recentSkills={recentSkills}
+      studentSkills={studentSkills}
+      recommendationCount={recommendationCount}
+      courseDataStatus={courseDataStatus}
       careerGoal={student?.career_goal || null}
-      college={student?.college || null}
-      avatarUrl={student?.avatar_url || null}
+      branch={student?.branch || null}
     />
   );
 }

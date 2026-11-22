@@ -1,0 +1,27 @@
+.page { display: grid; gap: 1.2rem; }
+.header { display: flex; align-items: end; justify-content: space-between; gap: 1rem; padding: 1.6rem; border: 1px solid #e8e5f1; border-radius: 1.2rem; background: #fff; }
+.header h1 { margin: .25rem 0; color: #19183a; font-size: clamp(1.7rem, 3vw, 2.35rem); letter-spacing: -.04em; }
+.header p { margin: 0; color: #686782; }
+.eyebrow { color: #535fc4; font-size: .7rem; font-weight: 800; letter-spacing: .13em; }
+.list { display: grid; gap: .9rem; }
+.card { padding: 1.3rem; border: 1px solid #e8e5f1; border-radius: 1rem; background: #fff; box-shadow: 0 8px 24px rgba(25,24,58,.05); }
+.cardHeader { display: flex; justify-content: space-between; gap: 1rem; }
+.card h2 { margin: .55rem 0 .2rem; color: #19183a; font-size: 1.2rem; }
+.category { color: #535fc4; font-size: .76rem; font-weight: 800; }
+.provider { margin: 0; color: #77778d; font-size: .82rem; }
+.score { display: grid; align-content: center; justify-items: center; flex: 0 0 84px; height: 84px; border: 3px solid #b6e8d0; border-radius: 50%; background: #f2fbf6; color: #27785b; }
+.score strong { font-size: 1.1rem; }
+.score span { font-size: .7rem; font-weight: 700; }
+.description { color: #55546f; font-size: .9rem; line-height: 1.6; }
+.skillGroup { margin-top: .8rem; }
+.skillGroup h3 { margin: 0 0 .45rem; color: #33334d; font-size: .82rem; }
+.skillList { display: flex; flex-wrap: wrap; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+.skillList li { display: flex; align-items: center; gap: .4rem; padding: .35rem .55rem; border-radius: .6rem; background: #f2f1f8; color: #3e3d59; font-size: .76rem; }
+.skillList small { color: #77778d; }
+.matched { background: #edf8f1 !important; }
+.improve { background: #fff7e8 !important; }
+.missing { background: #fff0f1 !important; }
+.courseLink { display: inline-flex; gap: .4rem; margin-top: 1rem; color: #535fc4; font-size: .86rem; font-weight: 800; }
+.empty,.notice { padding: 2rem; border: 1px solid #e8e5f1; border-radius: 1rem; background: #fff; color: #55546f; }
+.empty h1,.empty h2,.notice h1 { margin-top: 0; color: #19183a; }
+@media (max-width: 650px) { .header { align-items: stretch; flex-direction: column; } .cardHeader { align-items: start; } .score { flex-basis: 72px; width: 72px; height: 72px; } }
