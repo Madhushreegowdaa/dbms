@@ -1,37 +1,35 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useRef, useState, useMemo } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import { createClient } from '../lib/supabase/client';
 import { PageEnter, StaggerContainer, StaggerItem } from './Animate';
 import styles from './SkillsManager.module.css';
 
-const CATEGORIES = [
-  'All','Programming Languages','Frontend Development','Backend Development',
-  'Databases','Data Science','Machine Learning','Cloud Computing',
-  'Cybersecurity','Tools and Technologies',
-];
 const PROFICIENCY = ['Beginner','Intermediate','Advanced'];
 
 export default function SkillsManager({ allSkills, studentSkills, studentId, hasProfile }) {
-  const router = useRouter();
   const [mySkills, setMySkills] = useState(studentSkills);
   const [search, setSearch]     = useState('');
   const [category, setCategory] = useState('All');
   const [tab, setTab]           = useState('browse');
-  const [loading, setLoading]   = useState(null);
+  const [loadingSkills, setLoadingSkills] = useState(() => new Set());
   const [editId, setEditId]     = useState(null);
   const [editProf, setEditProf] = useState('Beginner');
   const [addProf, setAddProf]   = useState({});
   const [toast, setToast]       = useState(null);
+  const pendingSkillIds = useRef(new Set());
+  const categories = useMemo(
+    () => ['All', ...new Set(allSkills.map(skill => skill.category).filter(Boolean))],
+    [allSkills]
+  );
 
   function showToast(msg, type = 'success') {
     setToast({ msg, type });
     setTimeout(() => setToast(null), 3000);
   }
 
-  const mySkillIds = new Set(mySkills.map(s => s.skill_id));
+  const mySkillIds = useMemo(() => new Set(mySkills.map(s => s.skill_id)), [mySkills]);
 
   const filtered = useMemo(() => allSkills.filter(s => {
     const matchCat = category === 'All' || s.category === category;
@@ -41,43 +39,84 @@ export default function SkillsManager({ allSkills, studentSkills, studentId, has
   }), [allSkills, category, search]);
 
   const mySkillsFull = useMemo(() =>
-    mySkills.map(ms => ({ ...ms, skill: allSkills.find(s => s.id === ms.skill_id) })).filter(ms => ms.skill),
+    mySkills.map(ms => ({ ...ms, skill: allSkills.find(s => s.skill_id === ms.skill_id) })).filter(ms => ms.skill),
   [mySkills, allSkills]);
+
+  async function runSkillMutation(skillId, mutation, onSuccess, successMessage) {
+    if (pendingSkillIds.current.has(skillId)) return;
+
+    pendingSkillIds.current.add(skillId);
+    setLoadingSkills(current => new Set(current).add(skillId));
+    try {
+      const { error } = await mutation(createClient());
+      if (error) return showToast(error.message, 'error');
+      onSuccess();
+      showToast(successMessage);
+    } catch (error) {
+      showToast(
+        error instanceof Error ? error.message : 'Could not update your skills. Please try again.',
+        'error'
+      );
+    } finally {
+      pendingSkillIds.current.delete(skillId);
+      setLoadingSkills(current => {
+        const next = new Set(current);
+        next.delete(skillId);
+        return next;
+      });
+    }
+  }
 
   async function addSkill(skillId) {
     if (!hasProfile) return showToast('Please create your profile first.', 'error');
     const prof = addProf[skillId] || 'Beginner';
-    setLoading(skillId);
-    const supabase = createClient();
-    const { error } = await supabase.from('student_skills').insert({ student_id: studentId, skill_id: skillId, proficiency: prof });
-    setLoading(null);
-    if (error) return showToast(error.message, 'error');
-    setMySkills(prev => [...prev, { skill_id: skillId, proficiency: prof }]);
-    showToast('Skill added!');
-    router.refresh();
+    if (!studentId) return showToast('Please create your profile first.', 'error');
+    await runSkillMutation(
+      skillId,
+      supabase => supabase.from('student_skills').insert({
+        student_id: studentId,
+        skill_id: skillId,
+        proficiency_level: prof,
+      }),
+      () => setMySkills(prev => [...prev, { skill_id: skillId, proficiency_level: prof }]),
+      'Skill added!'
+    );
   }
 
   async function removeSkill(skillId) {
-    setLoading(skillId);
-    const supabase = createClient();
-    const { error } = await supabase.from('student_skills').delete().eq('student_id', studentId).eq('skill_id', skillId);
-    setLoading(null);
-    if (error) return showToast(error.message, 'error');
-    setMySkills(prev => prev.filter(s => s.skill_id !== skillId));
-    showToast('Skill removed.');
-    router.refresh();
+    if (!studentId) return showToast('Student profile not found.', 'error');
+    await runSkillMutation(
+      skillId,
+      supabase => supabase.from('student_skills')
+        .delete()
+        .eq('student_id', studentId)
+        .eq('skill_id', skillId),
+      () => setMySkills(prev => prev.filter(s => s.skill_id !== skillId)),
+      'Skill removed.'
+    );
   }
 
   async function saveEdit(skillId) {
-    setLoading(skillId);
-    const supabase = createClient();
-    const { error } = await supabase.from('student_skills').update({ proficiency: editProf }).eq('student_id', studentId).eq('skill_id', skillId);
-    setLoading(null);
-    if (error) return showToast(error.message, 'error');
-    setMySkills(prev => prev.map(s => s.skill_id === skillId ? { ...s, proficiency: editProf } : s));
-    setEditId(null);
-    showToast('Proficiency updated!');
-    router.refresh();
+    if (!studentId) return showToast('Student profile not found.', 'error');
+    const currentSkill = mySkills.find(skill => skill.skill_id === skillId);
+    if (currentSkill?.proficiency_level === editProf) {
+      setEditId(null);
+      return;
+    }
+    await runSkillMutation(
+      skillId,
+      supabase => supabase.from('student_skills')
+        .update({ proficiency_level: editProf })
+        .eq('student_id', studentId)
+        .eq('skill_id', skillId),
+      () => {
+        setMySkills(prev => prev.map(skill =>
+          skill.skill_id === skillId ? { ...skill, proficiency_level: editProf } : skill
+        ));
+        setEditId(null);
+      },
+      'Proficiency updated!'
+    );
   }
 
   return (
@@ -115,7 +154,7 @@ export default function SkillsManager({ allSkills, studentSkills, studentId, has
 
       <div className={styles.skillTicker} aria-hidden="true">
         <div className={styles.skillTickerTrack}>
-          {[...CATEGORIES.filter(c => c !== 'All'), ...CATEGORIES.filter(c => c !== 'All')].map((categoryName, i) => (
+          {[...categories.filter(c => c !== 'All'), ...categories.filter(c => c !== 'All')].map((categoryName, i) => (
             <span key={`${categoryName}-${i}`} className={styles.skillTickerItem}>
               {categoryName} <b>✦</b>
             </span>
@@ -162,7 +201,7 @@ export default function SkillsManager({ allSkills, studentSkills, studentId, has
                 onChange={e => setSearch(e.target.value)}
               />
               <div className={styles.catFilters}>
-                {CATEGORIES.map(c => (
+                {categories.map(c => (
                   <motion.button
                     key={c}
                     className={`${styles.catBtn} ${category === c ? styles.catActive : ''}`}
@@ -187,10 +226,10 @@ export default function SkillsManager({ allSkills, studentSkills, studentId, has
             ) : (
               <StaggerContainer className="grid-3" stagger={0.05} delay={0}>
                 {filtered.map(skill => {
-                  const added = mySkillIds.has(skill.id);
-                  const isLoading = loading === skill.id;
+                  const added = mySkillIds.has(skill.skill_id);
+                  const isLoading = loadingSkills.has(skill.skill_id);
                   return (
-                    <StaggerItem key={skill.id}>
+                    <StaggerItem key={skill.skill_id}>
                       <motion.div
                         className={`card ${styles.skillCard} ${added ? styles.skillAdded : ''}`}
                         whileHover={{ y: -4, boxShadow: '0 1rem 2.5rem rgba(0,0,0,.12)' }}
@@ -221,14 +260,15 @@ export default function SkillsManager({ allSkills, studentSkills, studentId, has
                           <div className={styles.addRow}>
                             <select
                               className={`form-control ${styles.profSelect}`}
-                              value={addProf[skill.id] || 'Beginner'}
-                              onChange={e => setAddProf(p => ({ ...p, [skill.id]: e.target.value }))}
+                              value={addProf[skill.skill_id] || 'Beginner'}
+                              onChange={e => setAddProf(p => ({ ...p, [skill.skill_id]: e.target.value }))}
+                              disabled={isLoading}
                             >
                               {PROFICIENCY.map(p => <option key={p}>{p}</option>)}
                             </select>
                             <motion.button
                               className="btn btn-primary btn-sm"
-                              onClick={() => addSkill(skill.id)}
+                              onClick={() => addSkill(skill.skill_id)}
                               disabled={isLoading || !hasProfile}
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
@@ -240,7 +280,7 @@ export default function SkillsManager({ allSkills, studentSkills, studentId, has
                           <motion.button
                             className="btn btn-sm"
                             style={{ background: '#fee2e2', color: '#991b1b', marginTop: '.5rem' }}
-                            onClick={() => removeSkill(skill.id)}
+                            onClick={() => removeSkill(skill.skill_id)}
                             disabled={isLoading}
                             whileHover={{ scale: 1.03 }}
                             whileTap={{ scale: 0.97 }}
@@ -279,9 +319,9 @@ export default function SkillsManager({ allSkills, studentSkills, studentId, has
             ) : (
               <StaggerContainer className="grid-3" stagger={0.06} delay={0}>
                 <AnimatePresence>
-                  {mySkillsFull.map(({ skill, skill_id, proficiency }) => {
+                  {mySkillsFull.map(({ skill, skill_id, proficiency_level }) => {
                     const isEditing = editId === skill_id;
-                    const isLoading = loading === skill_id;
+                    const isLoading = loadingSkills.has(skill_id);
                     return (
                       <StaggerItem key={skill_id}>
                         <motion.div
@@ -293,13 +333,13 @@ export default function SkillsManager({ allSkills, studentSkills, studentId, has
                           <div className={styles.skillTop}>
                             <span className={styles.skillCatTag}>{skill.category}</span>
                             <motion.span
-                              key={proficiency}
-                              className={`badge badge-${proficiency.toLowerCase()}`}
+                              key={proficiency_level}
+                              className={`badge badge-${proficiency_level.toLowerCase()}`}
                               initial={{ scale: 0.7, opacity: 0 }}
                               animate={{ scale: 1, opacity: 1 }}
                               transition={{ duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }}
                             >
-                              {proficiency}
+                              {proficiency_level}
                             </motion.span>
                           </div>
                           <h3 className={styles.skillName}>{skill.skill_name}</h3>
@@ -318,6 +358,7 @@ export default function SkillsManager({ allSkills, studentSkills, studentId, has
                                   className={`form-control ${styles.profSelect}`}
                                   value={editProf}
                                   onChange={e => setEditProf(e.target.value)}
+                                  disabled={isLoading}
                                 >
                                   {PROFICIENCY.map(p => <option key={p}>{p}</option>)}
                                 </select>
@@ -325,7 +366,7 @@ export default function SkillsManager({ allSkills, studentSkills, studentId, has
                                   <button className="btn btn-primary btn-sm" onClick={() => saveEdit(skill_id)} disabled={isLoading}>
                                     {isLoading ? <span className="spinner" /> : 'Save'}
                                   </button>
-                                  <button className="btn btn-outline-primary btn-sm" onClick={() => setEditId(null)}>Cancel</button>
+                                  <button className="btn btn-outline-primary btn-sm" onClick={() => setEditId(null)} disabled={isLoading}>Cancel</button>
                                 </div>
                               </motion.div>
                             ) : (
@@ -339,7 +380,7 @@ export default function SkillsManager({ allSkills, studentSkills, studentId, has
                               >
                                 <motion.button
                                   className="btn btn-outline-primary btn-sm"
-                                  onClick={() => { setEditId(skill_id); setEditProf(proficiency); }}
+                                  onClick={() => { setEditId(skill_id); setEditProf(proficiency_level); }}
                                   whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
                                 >
                                   ✏️ Edit

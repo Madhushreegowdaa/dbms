@@ -1,43 +1,49 @@
-import { createClient } from '../../../lib/supabase/server';
+import { createClient, getAuthenticatedUser } from '../../../lib/supabase/server';
 import { redirect } from 'next/navigation';
 import SkillsManager from '../../../components/SkillsManager';
 
 export const metadata = { title: 'My Skills – SkillPath' };
 
 export default async function SkillsPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getAuthenticatedUser();
   if (!user) redirect('/login');
 
-  // Get student record
-  const { data: student } = await supabase
-    .from('students')
-    .select('id')
-    .eq('auth_user_id', user.id)
-    .single();
+  const supabase = await createClient();
 
-  // Get all available skills
-  const { data: allSkills } = await supabase
-    .from('skills')
-    .select('*')
-    .order('category')
-    .order('skill_name');
+  const [
+    { data: student, error: studentError },
+    { data: allSkills, error: skillsError },
+  ] = await Promise.all([
+    supabase
+      .from('students')
+      .select('student_id')
+      .eq('student_id', user.id)
+      .maybeSingle(),
+    supabase
+      .from('skills')
+      .select('skill_id, skill_name, category')
+      .order('category')
+      .order('skill_name'),
+  ]);
+  if (studentError) throw new Error(`Could not load student profile: ${studentError.message}`);
+  if (skillsError) throw new Error(`Could not load skills catalog: ${skillsError.message}`);
 
   // Get student's current skills
   let studentSkills = [];
   if (student) {
-    const { data } = await supabase
+    const { data, error: studentSkillsError } = await supabase
       .from('student_skills')
-      .select('skill_id, proficiency, created_at')
-      .eq('student_id', student.id);
-    studentSkills = data || [];
+      .select('skill_id, proficiency_level')
+      .eq('student_id', student.student_id);
+    if (studentSkillsError) throw new Error(`Could not load your skills: ${studentSkillsError.message}`);
+    studentSkills = data;
   }
 
   return (
     <SkillsManager
-      allSkills={allSkills || []}
+      allSkills={allSkills}
       studentSkills={studentSkills}
-      studentId={student?.id || null}
+      studentId={student?.student_id || null}
       hasProfile={!!student}
     />
   );

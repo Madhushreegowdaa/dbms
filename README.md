@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Student Skill and Course Recommendation System
 
-## Getting Started
+SkillPath is a Next.js application backed by Supabase Authentication and PostgreSQL. Students maintain a profile and proficiency-rated skills; the database compares those skills with course requirements, ranks relevant courses, identifies skill gaps, and saves recommendation snapshots.
 
-First, run the development server:
+## Requirements
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js compatible with Next.js 16
+- A Supabase project
+- The Supabase project URL and publishable key
+
+Create `.env.local` in the project root (the directory containing `package.json`):
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-project-publishable-key
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Do not commit `.env.local` or share its contents. `.gitignore` excludes it. The application validates that both settings are present when creating a Supabase client.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Local development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+```
 
-## Learn More
+Open [http://localhost:3000](http://localhost:3000).
 
-To learn more about Next.js, take a look at the following resources:
+## Supabase database setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The repository includes legacy migrations `001_initial_schema.sql` through `003_student_avatar.sql` for the student profile, skills catalog, student skills, and storage. The application currently does not use avatar storage. The new course and recommendation features require these additional migrations, applied in order:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. `supabase/migrations/004_courses_and_recommendations.sql`
+2. `supabase/migrations/005_seed_courses.sql`
 
-## Deploy on Vercel
+Apply each file using the Supabase SQL Editor or the project's approved migration workflow. Do not run these against production until the SQL has been reviewed and backed up. These files are repository migrations; this repository change does not apply them to your hosted Supabase project.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The catalog contains 18 sample courses, links to provider-maintained learning pages, skill requirements that reference the existing seeded skill catalog, and exact career-goal labels. Confirm course availability and terms with providers before relying on an offering.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Main features
+
+- Authentication-protected dashboard, profile editing, and skill management.
+- Searchable course catalog at `/courses`.
+- Ranked recommendations at `/recommendations`, computed by PostgreSQL and persisted for the current student.
+- PostgreSQL RLS policies restrict profile and recommendation data to the owning authenticated user.
+
+## Database documentation
+
+- [DBMS design and SQL examples](./docs/dbms-design.md)
+- [Recommendation scoring and persistence](./docs/recommendation-engine.md)
+- [Data architecture and ER diagram](./.github/modernize/assessment/engines/facts/data-architecture.md)
+- SQL query examples: `supabase/queries/course_recommendations_examples.sql`
+
+## Checks
+
+```bash
+npm test
+npm run lint
+npm run build
+```
+
+The SQL migrations must be applied to a development Supabase project and exercised there to verify database behavior end to end.

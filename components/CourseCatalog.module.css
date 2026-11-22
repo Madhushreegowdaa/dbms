@@ -1,0 +1,26 @@
+.page { display: grid; gap: 1.25rem; }
+.header { display: flex; align-items: end; justify-content: space-between; gap: 1rem; padding: 1.6rem; border: 1px solid #e8e5f1; border-radius: 1.2rem; background: #fff; }
+.header h1 { margin: .25rem 0; color: #19183a; font-size: clamp(1.7rem, 3vw, 2.4rem); letter-spacing: -.04em; }
+.header p { margin: 0; color: #686782; }
+.eyebrow { color: #535fc4; font-size: .7rem; font-weight: 800; letter-spacing: .13em; }
+.filters { display: flex; align-items: end; gap: .8rem; padding: 1rem; border: 1px solid #e8e5f1; border-radius: 1rem; background: #fff; }
+.searchLabel { flex: 1; }
+.searchLabel,.categoryLabel { display: grid; gap: .4rem; color: #55546f; font-size: .8rem; font-weight: 700; }
+.categoryLabel { width: min(100%, 260px); }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.card { display: flex; min-width: 0; flex-direction: column; padding: 1.2rem; border: 1px solid #e8e5f1; border-radius: 1rem; background: #fff; box-shadow: 0 8px 24px rgba(25,24,58,.05); }
+.cardTop { display: flex; justify-content: space-between; gap: .5rem; }
+.category,.difficulty { border-radius: 999px; padding: .3rem .6rem; background: #f0efff; color: #535fc4; font-size: .68rem; font-weight: 800; }
+.difficulty { background: #f3f4f7; color: #58596c; }
+.card h2 { margin: 1rem 0 .2rem; color: #19183a; font-size: 1.05rem; line-height: 1.35; }
+.provider { margin: 0; color: #77778d; font-size: .8rem; }
+.description { min-height: 3.2em; margin: .8rem 0; color: #55546f; font-size: .88rem; line-height: 1.55; }
+.skills { display: grid; gap: .5rem; margin-top: auto; }
+.skills strong { color: #30304a; font-size: .78rem; }
+.skills div { display: flex; flex-wrap: wrap; gap: .35rem; }
+.skills span { padding: .3rem .5rem; border-radius: .55rem; background: #f8f7fc; color: #41415d; font-size: .72rem; }
+.skills small { color: #77778d; }
+.courseLink { display: inline-flex; justify-content: space-between; margin-top: 1rem; padding-top: .8rem; border-top: 1px solid #efedf5; color: #535fc4; font-size: .85rem; font-weight: 800; }
+.empty { padding: 2rem; border: 1px dashed #d9d6e8; border-radius: 1rem; color: #686782; text-align: center; }
+@media (max-width: 950px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 650px) { .header,.filters { align-items: stretch; flex-direction: column; } .categoryLabel { width: 100%; } .grid { grid-template-columns: 1fr; } }

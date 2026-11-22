@@ -29,6 +29,8 @@ export default function Navbar({ isPublic = false }) {
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/profile',   label: 'My Profile' },
     { href: '/skills',    label: 'My Skills'  },
+    { href: '/courses',   label: 'Courses' },
+    { href: '/recommendations', label: 'Recommendations' },
   ];
   const pubLinks = [
     { href: '/',       label: 'Home'    },

@@ -19,16 +19,22 @@ export default function SignupPage() {
     setError('');
     if (form.password !== form.confirm) return setError('Passwords do not match.');
     if (form.password.length < 6) return setError('Password must be at least 6 characters.');
+    const email = form.email.trim();
     setLoading(true);
-    const supabase = createClient();
-    const { error: err } = await supabase.auth.signUp({
-      email: form.email,
-      password: form.password,
-      options: { emailRedirectTo: `${location.origin}/dashboard` },
-    });
-    setLoading(false);
-    if (err) return setError(err.message);
-    setDone(true);
+    try {
+      const supabase = createClient();
+      const { error: err } = await supabase.auth.signUp({
+        email,
+        password: form.password,
+        options: { emailRedirectTo: `${location.origin}/dashboard` },
+      });
+      if (err) return setError(err.message);
+      setDone(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unable to create account. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (done) return (
@@ -37,7 +43,7 @@ export default function SignupPage() {
         <div className={styles.successIcon}>✉️</div>
         <h2 className={styles.title}>Check your email</h2>
         <p className={styles.sub} style={{ marginBottom: '1.5rem' }}>
-          We sent a confirmation link to <strong>{form.email}</strong>.<br />
+          We sent a confirmation link to <strong>{form.email.trim()}</strong>.<br />
           Click it to activate your account, then sign in.
         </p>
         <Link href="/login" className="btn btn-primary" style={{ width: '100%', padding: '.75rem', justifyContent: 'center' }}>
@@ -62,7 +68,10 @@ export default function SignupPage() {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email Address</label>
-            <input className="form-control" type="email" required placeholder="you@college.edu" value={form.email} onChange={set('email')} />
+            <input className="form-control" type="email" required placeholder="name@your-domain.edu" value={form.email} onChange={set('email')} />
+            <small style={{ display: 'block', marginTop: '.35rem' }}>
+              Use a real email address you can access; the placeholder is only a format example.
+            </small>
           </div>
           <div className="form-group">
             <label>Password</label>
